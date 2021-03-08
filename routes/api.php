@@ -22,8 +22,11 @@ Route::get('/ip', 'MainController@getIpAddress');
 Route::post('/ip', 'MainController@ipAddressExists');
 Route::get('/ip_portal', 'MainController@currentPortalByIp');
 
+Route::get('/log', 'LogController@index');
+
 Route::apiResource('client', 'ClientController');
 Route::get('/client_type', 'ClientController@clientTypes');
 Route::get('/ip_client', 'ClientController@clientByIp');
 Route::apiResource('portal', 'PortalController');
-Route::get('/client_logout', 'MainController@logout');
+Route::get('/client_logout/{client?}', 'MainController@logout');
+Route::get('/close/{portal}', 'MainController@close');

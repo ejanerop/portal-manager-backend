@@ -12,7 +12,7 @@ use ErrorException;
 
 class SpecialController extends Controller
 {
-    
+
 
     public function closeSpecial(Request $request, $portal){
 
@@ -33,7 +33,7 @@ class SpecialController extends Controller
                 SSH::run($script);
                 SSH::run($cooldown);
             } catch (ErrorException $err) {
-                return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+                return response()->json('Intentalo en unos segundos', 401);
             }
 
         }elseif ($portal == 'international') {
@@ -48,7 +48,7 @@ class SpecialController extends Controller
                 SSH::run($script);
                 SSH::run($cooldown);
             } catch (ErrorException $err) {
-                return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+                return response()->json('Intentalo en unos segundos', 401);
             }
 
 
@@ -66,7 +66,7 @@ class SpecialController extends Controller
                 SSH::run($script);
                 SSH::run($cooldown);
             } catch (ErrorException $err) {
-                return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+                return response()->json('Intentalo en unos segundos', 401);
             }
 
         }
@@ -97,7 +97,7 @@ class SpecialController extends Controller
             }elseif ($portal == 'portal2') {
                 $portal = '2Games';
             }
-        }        
+        }
 
         $script = 'ip firewall address-list set [find where address="' . $ip .'"] list="' . $portal . '"';
 
@@ -105,13 +105,13 @@ class SpecialController extends Controller
             SSH::run($script);
             SSH::run($cooldown);
         } catch (ErrorException $err) {
-            return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+            return response()->json('Intentalo en unos segundos', 401);
         }
 
         return redirect()->route('portal')->with('success', 'Portal cambiado con éxito');
 
 
-    }    
+    }
 
     public function toggleScript(Request $request, $active = false){
 
@@ -126,18 +126,18 @@ class SpecialController extends Controller
                 SSH::run($scriptEnable);
                 SSH::run($cooldown);
             } catch (ErrorException $err) {
-                return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+                return response()->json('Intentalo en unos segundos', 401);
             }
 
             return redirect()->route('portal')->with('success', 'Script habiblitado con éxito');
         }else {
-           
+
             $scriptDisable = 'system script job remove [find script=#!8AutologuinTimeBucleGames]';
             try {
                 SSH::run($scriptDisable);
                 SSH::run($cooldown);
             } catch (ErrorException $err) {
-                return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+                return response()->json('Intentalo en unos segundos', 401);
             }
 
             return redirect()->route('portal')->with('success', 'Script deshabiblitado con éxito');
@@ -154,7 +154,7 @@ class SpecialController extends Controller
 
         if ($portal == '1'){
 
-            if($ip == '192.168.20.86'){                
+            if($ip == '192.168.20.86'){
                 return redirect()->route('portal')->with('error', 'Portal no autorizado');
             }
 
@@ -162,7 +162,7 @@ class SpecialController extends Controller
 
         }elseif ($portal == '2'){
 
-            if($ip == '192.168.20.86'){                
+            if($ip == '192.168.20.86'){
                 return redirect()->route('portal')->with('error', 'Portal no autorizado');
             }
 
@@ -174,19 +174,19 @@ class SpecialController extends Controller
 
         }elseif ($portal == '4'){
 
-            if($ip == '192.168.20.86'){                
+            if($ip == '192.168.20.86'){
                 return redirect()->route('portal')->with('error', 'Portal no autorizado');
             }
-            
+
             $script = 'ip dhcp-client release [find interface="a17"]';
 
-        }        
+        }
 
         try {
             SSH::run($script);
             SSH::run($cooldown);
         } catch (ErrorException $err) {
-            return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+            return response()->json('Intentalo en unos segundos', 401);
         }
 
 
@@ -204,7 +204,7 @@ class SpecialController extends Controller
             SSH::run($script);
             SSH::run($cooldown);
         } catch (ErrorException $err) {
-            return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+            return response()->json('Intentalo en unos segundos', 401);
         }
 
         return redirect()->route('portal')->with('success', 'Portal cambiado con éxito');
@@ -213,13 +213,13 @@ class SpecialController extends Controller
 
 
     public function enableVpnScript(){
-        
+
         system("cmd /c C:\Users\webnew\Desktop\startservice.bat");
-        
+
         return redirect()->route('portal')->with('success', 'Script ejecutado con éxito');
     }
 
-    public function disableVpnScript(Request $request){      
+    public function disableVpnScript(Request $request){
 
         system("cmd /c C:\Users\webnew\Desktop\stopservice.bat");
 
@@ -228,12 +228,12 @@ class SpecialController extends Controller
 
         $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:15';
         $script = 'ip dhcp-client release [find interface="a2"]';
-        
+
         try {
             SSH::run($script);
             SSH::run($cooldown);
         } catch (ErrorException $err) {
-            return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+            return response()->json('Intentalo en unos segundos', 401);
         }
 
         return redirect()->route('portal')->with('success', 'Script ejecutado con éxito');
@@ -259,7 +259,7 @@ class SpecialController extends Controller
             SSH::run($script);
             SSH::run($cooldown);
         } catch (ErrorException $err) {
-            return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+            return response()->json('Intentalo en unos segundos', 401);
         }
 
         return redirect()->route('portal')->with('success', 'Portal cambiado con éxito');
@@ -276,12 +276,12 @@ class SpecialController extends Controller
             SSH::run($script);
             SSH::run($cooldown);
         } catch (ErrorException $err) {
-            return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+            return response()->json('Intentalo en unos segundos', 401);
         }
 
         return redirect()->route('portal')->with('success', 'Portal cerrado con éxito');
     }
-    
+
     public function changeFlasho(Request $request){
 
         $ip = $request->ip();
@@ -293,7 +293,7 @@ class SpecialController extends Controller
             SSH::run($script);
             SSH::run($cooldown);
         } catch (ErrorException $err) {
-            return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+            return response()->json('Intentalo en unos segundos', 401);
         }
 
         return redirect()->route('portal')->with('success', 'Portal cambiado con éxito');
@@ -307,12 +307,12 @@ class SpecialController extends Controller
 
         $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:15';
         $script = 'ip dhcp-client release [find interface="a9"]';
-        
+
         try {
             SSH::run($script);
             SSH::run($cooldown);
         } catch (ErrorException $err) {
-            return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+            return response()->json('Intentalo en unos segundos', 401);
         }
 
         return redirect()->route('portal')->with('success', 'Portal cerrado con éxito');

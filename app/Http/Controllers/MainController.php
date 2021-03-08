@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Log;
 use App\Portal;
 use Exception;
 use Illuminate\Http\Request;
+use Collective\Remote\RemoteFacade as SSH;
 
 class MainController extends Controller
 {
@@ -38,7 +40,7 @@ class MainController extends Controller
                 $response .= $line;
             });
         } catch (Exception $th) {
-            return response()->json('Intentelo de nuevo en unos segundos', 403);
+            return response()->json('Intentelo de nuevo en unos segundos', 401);
         }
 
         str_replace('Flags: X - disabled, D - dynamic # LIST ADDRESS CREATION-TIME ', '', $response);
@@ -61,7 +63,7 @@ class MainController extends Controller
 
         $logs = Log::orderBy('created_at', 'DESC')->get();
 
-        return view('logs', ['logs' => $logs]);
+        return $logs->toJson(JSON_PRETTY_PRINT);
 
     }
 
@@ -80,7 +82,7 @@ class MainController extends Controller
                 $response .= $line;
             });
         } catch (Exception $th) {
-            return response()->json('Intentelo de nuevo en unos segundos', 403);
+            return response()->json('Intentelo de nuevo en unos segundos', 401);
         }
 
         str_replace('Flags: X - disabled, D - dynamic # LIST ADDRESS CREATION-TIME ', '', $response);
@@ -104,7 +106,7 @@ class MainController extends Controller
             SSH::run($cooldown);
             return response()->json('Portal cerrado con éxito', 200);
         } catch (Exception $err) {
-            return response()->json('Intentelo de nuevo en unos segundos', 403);
+            return response()->json('Intentelo de nuevo en unos segundos', 401);
         }
 
     }
@@ -150,7 +152,7 @@ class MainController extends Controller
             SSH::run($cooldown);
             return response()->json('Portal cerrado con éxito', 200);
         } catch (Exception $err) {
-            return response()->json('Intentelo de nuevo en unos segundos', 403);
+            return response()->json('Intentelo de nuevo en unos segundos', 401);
         }
 
     }
@@ -175,8 +177,8 @@ class MainController extends Controller
         try {
             SSH::run($script);
             SSH::run($cooldown);
-        } catch (ErrorException $err) {
-            return redirect()->route('portal')->with('error', 'Inténtelo de nuevo en unos segundos');
+        } catch (Exception $err) {
+            return response()->json('Intentalo en unos segundos', 403);
         }
 
         return redirect()->route('portal')->with('success', 'Script ejecutado con éxito');
