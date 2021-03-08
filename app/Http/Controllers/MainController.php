@@ -43,13 +43,16 @@ class MainController extends Controller
             return response()->json('Intentelo de nuevo en unos segundos', 401);
         }
 
-        str_replace('Flags: X - disabled, D - dynamic # LIST ADDRESS CREATION-TIME ', '', $response);
+        $newResponse = str_replace('Flags: X - disabled, D - dynamic', '', $response);
+        $newResponse = str_replace('#   LIST             ADDRESS                              CREATION-TIME       ', '', $newResponse);
+        $newResponse = str_replace('\n', '', $newResponse);
+        $newResponse = preg_replace('/\s\s+/', ' ', $newResponse);
 
-        $arrResponse = explode(' ', $response);
+        $arrResponse = explode(' ', $newResponse);
 
-        if ($arrResponse[0] == 'X') { return response()->json('Usuario deshabilitado', 404); }
+        if ($arrResponse[1] == 'X') { return response()->json('Usuario deshabilitado', 404); }
 
-        $portal = Portal::where('address_list' , $arrResponse[1])->first();
+        $portal = Portal::where('address_list' ,$arrResponse[2])->first();
 
         if (!$portal){ return response()->json('Portal no encontrado', 404); }
 
@@ -85,18 +88,20 @@ class MainController extends Controller
             return response()->json('Intentelo de nuevo en unos segundos', 401);
         }
 
-        str_replace('Flags: X - disabled, D - dynamic # LIST ADDRESS CREATION-TIME ', '', $response);
+        $newResponse = str_replace('Flags: X - disabled, D - dynamic', '', $response);
+        $newResponse = str_replace('#   LIST             ADDRESS                              CREATION-TIME       ', '', $newResponse);
+        $newResponse = str_replace('\n', '', $newResponse);
+        $newResponse = preg_replace('/\s\s+/', ' ', $newResponse);
+        $arrResponse = explode(' ', $newResponse);
 
-        $arrResponse = explode(' ', $response);
-
-        if ($arrResponse[0] == 'X') {
+        if ($arrResponse[1] == 'X') {
             return response()->json('Usuario deshabilitado', 404);
         }
 
-        $portal = Portal::where('address_list' , $arrResponse[1])->first();
+        $portal = Portal::where('address_list' , $arrResponse[2])->first();
 
         if (!$portal){
-            return response()->json('Portal no encontrado', 404);
+            return response()->json('Portal no encontrado' . $newResponse, 404);
         }
 
         $script = 'ip dhcp-client release [find interface=' . $portal->dhcp_client . ']';
@@ -130,7 +135,6 @@ class MainController extends Controller
         try {
             SSH::run($script);
             SSH::run($cooldown);
-            //Logger::log($ip, $type);
             return response()->json('Portal cambiado con éxito.', 200);
         } catch (Exception $err) {
             return response()->json('Inténtelo en unos segundos.', 403);
@@ -171,8 +175,8 @@ class MainController extends Controller
         $ip = $request->ip();
         $type ='';
 
-        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:15';
         $script = 'ip dhcp-client release [find interface="a2"]';
+        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:15';
 
         try {
             SSH::run($script);

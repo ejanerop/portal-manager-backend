@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Gamer;
-use App\Log;
-use App\Util\Logger;
-use SSH;
 use Illuminate\Http\Request;
 use App\Util\Portals;
 use ErrorException;
+use Collective\Remote\RemoteFacade as SSH;
 
 class SpecialController extends Controller
 {
