@@ -37,3 +37,7 @@ Route::get('/client_logout/{client?}', 'MainController@logout'); //parametro cli
 Route::get('/change/{portal}/{client?}', 'MainController@change'); //parametro client solo admin
 
 
+Route::post('/login', 'Auth\LoginController@login');
+Route::post('/logout', 'Auth\LoginController@logout');
+
+
