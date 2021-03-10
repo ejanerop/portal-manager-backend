@@ -29,10 +29,15 @@ class MainController extends Controller
         return response()->json($request->ip());
     }
 
-    public function currentPortalByIp( Request $request ) {
+    public function currentClientByIp( Request $request ) {
 
         $ip = $request->ip();
         $response = '';
+        $client = Client::where('ip_address', $ip)->with(['client_type', 'portals'])->first();
+
+        if(!$client) {
+            return response()->json( 'Ip no registrada!', 404 );
+        }
 
         $command = 'ip firewall address-list print where address="' . $ip . '"';
         try {
@@ -56,7 +61,7 @@ class MainController extends Controller
 
         if (!$portal){ return response()->json('Portal no encontrado', 404); }
 
-        return $portal->toJson(JSON_PRETTY_PRINT);
+        return response()->json(["client" => $client, "portal" => $portal], 200);
 
     }
 

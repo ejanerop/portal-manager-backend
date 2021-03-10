@@ -31,8 +31,7 @@ Route::get('/log', 'LogController@index'); //por ahora solo admin
 
 Route::get('/ip', 'MainController@getIpAddress');
 Route::post('/ip', 'MainController@ipAddressExists');
-Route::get('/ip_portal', 'MainController@currentPortalByIp');
-Route::get('/ip_client', 'ClientController@clientByIp');
+Route::get('/ip_client', 'MainController@currentClientByIp');
 Route::get('/client_logout/{client?}', 'MainController@logout'); //parametro client solo admin
 Route::get('/change/{portal}/{client?}', 'MainController@change'); //parametro client solo admin
 

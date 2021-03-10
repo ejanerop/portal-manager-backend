@@ -86,7 +86,7 @@ class ClientController extends Controller
             if($client) {
                 return $client->toJson(JSON_PRETTY_PRINT);
             }else {
-                return response()->json('No encontrado', 404    );
+                return response()->json( 'No encontrado', 404 );
             }
         }
 
