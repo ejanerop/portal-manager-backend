@@ -13,4 +13,8 @@ class Client extends Model
     public function portals() {
         return $this->belongsToMany('App\Portal');
     }
+
+    public function permissions() {
+        return $this->belongsToMany('App\Permission');
+    }
 }
