@@ -6,6 +6,7 @@ use App\Client;
 use App\Log;
 use App\Portal;
 use App\Util\Logger;
+use App\Util\Connection;
 use Exception;
 use Illuminate\Http\Request;
 use Collective\Remote\RemoteFacade as SSH;
@@ -40,11 +41,8 @@ class MainController extends Controller
             return response()->json( 'Ip no registrada!', 404 );
         }
 
-        $command = 'ip firewall address-list print where address="' . $ip . '"';
         try {
-            SSH::run($command, function($line) use(&$response) {
-                $response .= $line;
-            });
+            $response = Connection::print($ip);
         } catch (Exception $th) {
             return response()->json('Intentelo de nuevo en unos segundos', 401);
         }
@@ -85,11 +83,8 @@ class MainController extends Controller
             $ip = $client->ip_address;
         }
 
-        $command = 'ip firewall address-list print where address="' . $ip . '"';
         try {
-            SSH::run($command, function($line) use(&$response) {
-                $response .= $line;
-            });
+            $response = Connection::print($ip);
         } catch (Exception $th) {
             return response()->json('Intentelo de nuevo en unos segundos', 401);
         }
@@ -110,11 +105,8 @@ class MainController extends Controller
             return response()->json('Portal no encontrado' . $newResponse, 404);
         }
 
-        $script = 'ip dhcp-client release [find interface=' . $portal->dhcp_client . ']';
-        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:15';
         try {
-            SSH::run($script);
-            SSH::run($cooldown);
+            Connection::close($portal);
             Logger::log($request->ip , 'close' , $portal);
             return response()->json('Portal cerrado con éxito', 200);
         } catch (Exception $err) {
@@ -132,16 +124,12 @@ class MainController extends Controller
             $ip = $client->ip_address;
         }
 
-        if ($portal) {
+        if (!$portal) {
             return response()->json('Portal no encontrado', 404);
         }
 
-        $script = 'ip firewall address-list set [find where address="' . $ip .'"] list="' . $portal->address_list . '"';
-        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:15';
-
         try {
-            SSH::run($script);
-            SSH::run($cooldown);
+            Connection::change( $ip , $portal);
             Logger::log($request->ip , 'change' , $portal);
             return response()->json('Portal cambiado con éxito.', 200);
         } catch (Exception $err) {
@@ -156,12 +144,8 @@ class MainController extends Controller
             return response()->json('Portal no encontrado', 404);
         }
 
-        $script = 'ip dhcp-client release [find interface=' . $portal->dhcp_client . ']';
-        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:15';
-
         try {
-            SSH::run($script);
-            SSH::run($cooldown);
+            Connection::close($portal);
             Logger::log($request->ip , 'close' , $portal);
             return response()->json('Portal cerrado con éxito', 200);
         } catch (Exception $err) {
