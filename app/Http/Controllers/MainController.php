@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\Log;
 use App\Portal;
+use App\Util\Logger;
 use Exception;
 use Illuminate\Http\Request;
 use Collective\Remote\RemoteFacade as SSH;
@@ -114,6 +115,7 @@ class MainController extends Controller
         try {
             SSH::run($script);
             SSH::run($cooldown);
+            Logger::log($request->ip , 'close' , $portal);
             return response()->json('Portal cerrado con éxito', 200);
         } catch (Exception $err) {
             return response()->json('Intentelo de nuevo en unos segundos', 401);
@@ -140,6 +142,7 @@ class MainController extends Controller
         try {
             SSH::run($script);
             SSH::run($cooldown);
+            Logger::log($request->ip , 'change' , $portal);
             return response()->json('Portal cambiado con éxito.', 200);
         } catch (Exception $err) {
             return response()->json('Inténtelo en unos segundos.', 403);
@@ -159,6 +162,7 @@ class MainController extends Controller
         try {
             SSH::run($script);
             SSH::run($cooldown);
+            Logger::log($request->ip , 'close' , $portal);
             return response()->json('Portal cerrado con éxito', 200);
         } catch (Exception $err) {
             return response()->json('Intentelo de nuevo en unos segundos', 401);
