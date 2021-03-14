@@ -13,7 +13,8 @@ class LogController extends Controller
      */
     public function index()
     {
-        return Log::with(['log_type', 'client', 'portal'])->get()->toJson(JSON_PRETTY_PRINT);
+        return Log::with(['log_type', 'client', 'portal'])->orderBy('created_at', 'DESC')
+        ->get()->toJson(JSON_PRETTY_PRINT);
     }
 
 

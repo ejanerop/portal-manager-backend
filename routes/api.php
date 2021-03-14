@@ -18,22 +18,23 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//solo admins
+Route::middleware('auth:api')->group(function () {
 
-Route::apiResource('client', 'ClientController');
-Route::apiResource('portal', 'PortalController');
-Route::get('/client_type', 'ClientController@clientTypes');
-Route::get('/close/{portal}', 'MainController@close');
-Route::get('/log', 'LogController@index'); //por ahora solo admin
+    Route::apiResource('client', 'ClientController');
+    Route::apiResource('portal', 'PortalController');
+    Route::get('/client_type', 'ClientController@clientTypes');
+    Route::get('/close/{portal}', 'ConnectionController@close');
+    Route::get('/log', 'LogController@index');
 
+});
 
 //todos los usuarios
 
 Route::get('/ip', 'MainController@getIpAddress');
 Route::post('/ip', 'MainController@ipAddressExists');
 Route::get('/ip_client', 'MainController@currentClientByIp');
-Route::get('/client_logout/{client?}', 'MainController@logout'); //parametro client solo admin
-Route::get('/change/{portal}/{client?}', 'MainController@change'); //parametro client solo admin
+Route::get('/client_logout/{client?}', 'ConnectionController@logout'); //parametro client solo admin
+Route::get('/change/{portal}/{client?}', 'ConnectionController@change'); //parametro client solo admin
 
 
 Route::post('/login', 'Auth\LoginController@login');
