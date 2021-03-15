@@ -6,10 +6,10 @@ use Illuminate\Database\Seeder;
 class PermissionSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+    * Run the database seeds.
+    *
+    * @return void
+    */
     public function run()
     {
         $permission = new Permission();
@@ -23,7 +23,7 @@ class PermissionSeeder extends Seeder
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'change-portals';
+        $permission->name = 'close-portals';
         $permission->desc = 'Cerrar portales permitidos';
         $permission->save();
 
