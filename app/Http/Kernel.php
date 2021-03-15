@@ -2,12 +2,8 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\CanChangeToDownloads;
-use App\Http\Middleware\UserIsAllowed;
-use App\Http\Middleware\UserIsGamer;
-use App\Http\Middleware\UserIsNotGamer;
-use App\Http\Middleware\UserIsSpecial;
-use App\Http\Middleware\UserIsVery;
+use App\Http\Middleware\Cors;
+use App\Http\Middleware\UserCan;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -27,6 +23,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        Cors::class
     ];
 
     /**
@@ -69,11 +66,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'user.is.gamer' => UserIsGamer::class,
-        'user.is.not.gamer' => UserIsNotGamer::class,
-        'user.is.special' => UserIsSpecial::class,
-        'user.is.very.special' => UserIsVerySpecial::class,
-        'user.is.allowed' => UserIsAllowed::class,
-        'can.change.to.downloads' => CanChangeToDownloads::class
+        'user.can' => UserCan::class,
+        'cors' => Cors::class
     ];
 }

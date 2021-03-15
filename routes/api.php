@@ -24,11 +24,12 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('portal', 'PortalController');
     Route::get('/client_type', 'ClientController@clientTypes');
     Route::get('/close/{portal}', 'ConnectionController@close');
-    Route::get('/log', 'LogController@index');
 
 });
 
 //todos los usuarios
+
+Route::get('/log', 'LogController@index')->middleware('user.can:see-logs');
 
 Route::get('/ip', 'MainController@getIpAddress');
 Route::post('/ip', 'MainController@ipAddressExists');
