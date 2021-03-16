@@ -47,7 +47,7 @@ class ConnectionController extends Controller
 
         try {
             Connection::close($portal);
-            Logger::log($request->ip , 'close' , $portal);
+            Logger::log($request->ip() , 'close' , $portal);
             return response()->json('Portal cerrado con éxito', 200);
         } catch (Exception $err) {
             return response()->json('Intentelo de nuevo en unos segundos', 401);
@@ -70,7 +70,7 @@ class ConnectionController extends Controller
 
         try {
             Connection::change( $ip , $portal);
-            Logger::log($request->ip , 'change' , $portal);
+            Logger::log($request->ip() , 'change' , $portal);
             return response()->json('Portal cambiado con éxito.', 200);
         } catch (Exception $err) {
             return response()->json('Inténtelo en unos segundos.', 403);
@@ -86,7 +86,7 @@ class ConnectionController extends Controller
 
         try {
             Connection::close($portal);
-            Logger::log($request->ip , 'close' , $portal);
+            Logger::log($request->ip() , 'close' , $portal);
             return response()->json('Portal cerrado con éxito', 200);
         } catch (Exception $err) {
             return response()->json('Intentelo de nuevo en unos segundos', 401);
