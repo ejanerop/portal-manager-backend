@@ -18,7 +18,7 @@ class ClientController extends Controller
     */
     public function index()
     {
-        return Client::with(['client_type', 'portals'])->get()->toJson(JSON_PRETTY_PRINT);
+        return Client::with(['client_type' , 'portals' , 'permissions'])->get()->toJson(JSON_PRETTY_PRINT);
     }
 
     public function clientTypes()
@@ -44,7 +44,8 @@ class ClientController extends Controller
             'ip_address' => 'required|ipv4|unique:clients',
             'type' => 'required',
             'desc' => 'nullable|string',
-            'portals' => 'required'
+            'portals' => 'required',
+            'permissions' => 'nullable'
             ]);
 
             $type = ClientType::find($request->input('type'));
@@ -54,11 +55,19 @@ class ClientController extends Controller
             $client->ip_address = $request->input('ip_address');
             $client->client_type()->associate($type);
             $portals = $request->input('portals');
+            $permissions = $request->input('permissions');
             $client->save();
 
             foreach ($portals as $id) {
                 $portal = Portal::find($id);
                 $client->portals()->attach($portal);
+            }
+
+            if($permissions) {
+                foreach ($permissions as $id) {
+                    $permission = Permission::find($id);
+                    $client->permissions()->attach($permission);
+                }
             }
 
             return response()->json('Correcto', 201);
@@ -73,7 +82,7 @@ class ClientController extends Controller
         */
         public function show(Client $client)
         {
-            $client->load(['client_type', 'portals']);
+            $client->load(['client_type', 'portals' , 'permissions']);
 
             return $client->toJson(JSON_PRETTY_PRINT);
         }
@@ -134,6 +143,16 @@ class ClientController extends Controller
                 foreach ($portals as $id) {
                     $portal = Portal::find($id);
                     $client->portals()->attach($portal);
+                }
+
+                $permissions = $request->input('permissions');
+                $client->permissions()->detach();
+
+                if($permissions) {
+                    foreach ($permissions as $id) {
+                        $permission = Permission::find($id);
+                        $client->permissions()->attach($permission);
+                    }
                 }
 
                 $client->save();
