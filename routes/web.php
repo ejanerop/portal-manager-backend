@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('portal');
-})->name('portal')->middleware('user.is.allowed');
+})->name('portal');
 
