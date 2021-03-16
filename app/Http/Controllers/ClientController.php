@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\ClientType;
+use App\Permission;
 use App\Portal;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -23,6 +24,11 @@ class ClientController extends Controller
     public function clientTypes()
     {
         return ClientType::all()->toJson(JSON_PRETTY_PRINT);
+    }
+
+    public function permissions()
+    {
+        return Permission::all()->toJson(JSON_PRETTY_PRINT);
     }
 
     /**

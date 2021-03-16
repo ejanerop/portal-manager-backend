@@ -23,6 +23,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('client', 'ClientController');
     Route::apiResource('portal', 'PortalController');
     Route::get('/client_type', 'ClientController@clientTypes');
+    Route::get('/permission', 'ClientController@permissions');
     Route::get('/close/{portal}', 'ConnectionController@close');
 
 });
