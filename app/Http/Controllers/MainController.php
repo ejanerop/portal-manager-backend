@@ -42,7 +42,7 @@ class MainController extends Controller
         }
 
         try {
-            $response = Connection::print($ip);
+            $response = Connection::print('address' , $ip);
         } catch (Exception $th) {
             return response()->json('Intentelo de nuevo en unos segundos', 401);
         }
@@ -62,6 +62,20 @@ class MainController extends Controller
 
         return response()->json(["client" => $client, "portal" => $portal], 200);
 
+    }
+
+    public function clientsInPortal( Request $request , Portal $portal ) {
+
+        $response = '';
+
+        if ($portal) {
+            try {
+                $response = Connection::print('list' , $portal->address_list);
+                return response()->json( $response , 200 );
+            } catch (Exception $th) {
+                return response()->json('Intentelo de nuevo en unos segundos', 401 );
+            }
+        }
     }
 
     public function enableVpnScript(){

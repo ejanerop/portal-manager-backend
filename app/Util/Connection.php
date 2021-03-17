@@ -37,9 +37,9 @@ class Connection
 
     }
 
-    public static function print( $ip ) {
+    public static function print( $arg , $ip ) {
 
-        $command = 'ip firewall address-list print where address="' . $ip . '"';
+        $command = 'ip firewall address-list print where '. $arg . '="' . $ip . '"';
         $response = '';
 
         try {
@@ -52,6 +52,8 @@ class Connection
         }
 
     }
+
+
 
 
 

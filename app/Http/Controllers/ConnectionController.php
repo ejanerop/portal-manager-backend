@@ -24,7 +24,7 @@ class ConnectionController extends Controller
         }
 
         try {
-            $response = Connection::print($ip);
+            $response = Connection::print('address' , $ip);
         } catch (Exception $th) {
             return response()->json('Intentelo de nuevo en unos segundos', 401);
         }
