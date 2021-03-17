@@ -50,13 +50,16 @@ class MainController extends Controller
         $newResponse = str_replace('Flags: X - disabled, D - dynamic', '', $response);
         $newResponse = str_replace('#   LIST             ADDRESS                              CREATION-TIME       ', '', $newResponse);
         $newResponse = str_replace('\n', '', $newResponse);
+        $newResponse = str_replace(';', '', $newResponse);
+        $newResponse = str_replace('-', '', $newResponse);
         $newResponse = preg_replace('/\s\s+/', ' ', $newResponse);
+        $newResponse = trim($newResponse);
 
         $arrResponse = explode(' ', $newResponse);
 
         if ($arrResponse[1] == 'X') { return response()->json('Usuario deshabilitado', 404); }
 
-        $portal = Portal::where('address_list' ,$arrResponse[2])->first();
+        $portal = Portal::where('address_list' ,$arrResponse[1])->first();
 
         if (!$portal){ return response()->json('Portal no encontrado', 404); }
 
@@ -68,14 +71,29 @@ class MainController extends Controller
 
         $response = '';
 
-        if ($portal) {
-            try {
-                $response = Connection::print('list' , $portal->address_list);
-                return response()->json( $response , 200 );
-            } catch (Exception $th) {
-                return response()->json('Intentelo de nuevo en unos segundos', 401 );
-            }
+        if (!$portal) {
+            return response()->json('Portal no encontrado', 404 );
         }
+
+        try {
+            $response = Connection::print('list' , $portal->address_list);
+        } catch (Exception $th) {
+            return response()->json('Intentelo de nuevo en unos segundos', 401 );
+        }
+
+        $newResponse = str_replace('Flags: X - disabled, D - dynamic', '', $response);
+        $newResponse = str_replace('#   LIST             ADDRESS                              CREATION-TIME       ', '', $newResponse);
+        $newResponse = str_replace('\n', '', $newResponse);
+        $newResponse = str_replace(';', '', $newResponse);
+        $newResponse = str_replace('-', '', $newResponse);
+        $newResponse = preg_replace('/\s\s+/', ' ', $newResponse);
+        $newResponse = trim($newResponse);
+
+        $arrResponse = explode(' ', $newResponse);
+
+        return response()->json( $arrResponse, 200 );
+
+
     }
 
     public function enableVpnScript(){

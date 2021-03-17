@@ -32,14 +32,17 @@ class ConnectionController extends Controller
         $newResponse = str_replace('Flags: X - disabled, D - dynamic', '', $response);
         $newResponse = str_replace('#   LIST             ADDRESS                              CREATION-TIME       ', '', $newResponse);
         $newResponse = str_replace('\n', '', $newResponse);
+        $newResponse = str_replace(';', '', $newResponse);
+        $newResponse = str_replace('-', '', $newResponse);
         $newResponse = preg_replace('/\s\s+/', ' ', $newResponse);
+        $newResponse = trim($newResponse);
         $arrResponse = explode(' ', $newResponse);
 
         if ($arrResponse[1] == 'X') {
             return response()->json('Usuario deshabilitado', 404);
         }
 
-        $portal = Portal::where('address_list' , $arrResponse[2])->first();
+        $portal = Portal::where('address_list' , $arrResponse[1])->first();
 
         if (!$portal){
             return response()->json('Portal no encontrado' . $newResponse, 404);
