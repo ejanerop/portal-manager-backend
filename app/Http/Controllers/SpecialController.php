@@ -14,7 +14,7 @@ class SpecialController extends Controller
 
         $ip = $request->ip();
         $type ='';
-        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:15';
+        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:05';
 
         if($active){
 
@@ -56,7 +56,7 @@ class SpecialController extends Controller
         $ip = $request->ip();
         $type ='';
 
-        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:15';
+        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:05';
         $script = 'ip dhcp-client release [find interface="a2"]';
 
         try {

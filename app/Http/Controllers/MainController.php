@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
-use App\Log;
 use App\Portal;
-use App\Util\Logger;
 use App\Util\Connection;
 use Exception;
 use Illuminate\Http\Request;
@@ -35,7 +33,7 @@ class MainController extends Controller
 
         $ip = $request->ip();
         $response = '';
-        $client = Client::where('ip_address', $ip)->with(['client_type', 'portals'])->first();
+        $client = Client::where('ip_address', $ip)->with(['client_type', 'portals' , 'permissions'])->first();
 
         if(!$client) {
             return response()->json( 'Ip no registrada!', 404 );
@@ -70,6 +68,7 @@ class MainController extends Controller
     public function clientsInPortal( Request $request , Portal $portal ) {
 
         $response = '';
+        $clients = [];
 
         if (!$portal) {
             return response()->json('Portal no encontrado', 404 );
@@ -91,7 +90,15 @@ class MainController extends Controller
 
         $arrResponse = explode(' ', $newResponse);
 
-        return response()->json( $arrResponse, 200 );
+        $count = 0;
+
+        foreach ($arrResponse as $item) {
+            if (strpos($item , '192.168.20.') !== false ){
+                array_push( $clients , Client::where('ip_address' , $item)->first());
+            }
+        }
+
+        return response()->json( $clients, 200 );
 
 
     }
@@ -111,7 +118,7 @@ class MainController extends Controller
         $type ='';
 
         $script = 'ip dhcp-client release [find interface="a2"]';
-        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:15';
+        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:05';
 
         try {
             SSH::run($script);
