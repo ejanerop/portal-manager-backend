@@ -94,7 +94,10 @@ class MainController extends Controller
 
         foreach ($arrResponse as $item) {
             if (strpos($item , '192.168.20.') !== false ){
-                array_push( $clients , Client::where('ip_address' , $item)->first());
+                $client = Client::where('ip_address' , $item)->first();
+                if ($client) {
+                    array_push( $clients , $client);
+                }
             }
         }
 
