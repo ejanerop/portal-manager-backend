@@ -24,7 +24,6 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('portal', 'PortalController');
     Route::get('/client_type', 'ClientController@clientTypes');
     Route::get('/permission', 'ClientController@permissions');
-    Route::get('/close/{portal}', 'ConnectionController@close');
 
 });
 
@@ -40,6 +39,7 @@ Route::get('/client_in_portal/{portal}', 'MainController@clientsInPortal');
 
 Route::get('/client_logout/{client?}', 'ConnectionController@logout'); //parametro client solo admin
 Route::get('/change/{portal}/{client?}', 'ConnectionController@change'); //parametro client solo admin
+Route::get('/close/{portal}', 'ConnectionController@close')->middleware('user.can:close-portals');
 
 
 Route::post('/login', 'Auth\LoginController@login');
