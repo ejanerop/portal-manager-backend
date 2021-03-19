@@ -96,7 +96,7 @@ class ClientController extends Controller
         public function clientByIp( Request $request )
         {
             $ip = $request->ip();
-            $client = Client::where('ip_address', $ip)->with(['client_type', 'portals'])->first();
+            $client = Client::where('ip_address', $ip)->with(['client_type', 'portals', 'permissions'])->first();
 
             if($client) {
                 return $client->toJson(JSON_PRETTY_PRINT);

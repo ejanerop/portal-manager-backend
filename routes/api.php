@@ -34,7 +34,8 @@ Route::get('/log', 'LogController@index')->middleware('user.can:see-logs');
 
 Route::get('/ip', 'MainController@getIpAddress');
 Route::post('/ip', 'MainController@ipAddressExists');
-Route::get('/ip_client', 'MainController@currentClientByIp');
+Route::get('/ip_info', 'MainController@currentClientByIp');
+Route::get('/ip_client', 'ClientController@clientByIp');
 Route::get('/client_in_portal/{portal}', 'MainController@clientsInPortal');
 
 Route::get('/client_logout/{client?}', 'ConnectionController@logout'); //parametro client solo admin
