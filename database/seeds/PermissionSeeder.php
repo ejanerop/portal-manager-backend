@@ -31,5 +31,10 @@ class PermissionSeeder extends Seeder
         $permission->name = 'see-users-in-portal';
         $permission->desc = 'Ver usuarios en el portal actual';
         $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'see-users-count-in-portal';
+        $permission->desc = 'Ver cantidad de usuarios en el portal actual';
+        $permission->save();
     }
 }

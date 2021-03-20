@@ -149,65 +149,12 @@ class Portals
 		'192.168.21.138',
     );
 
-    public static function getInterface($ip){
-        return Portals::$interfaces[$ip];
-    }
-
-    public static function isGamerUser($ip){
-        $isIt = true;
-        $user = Gamer::where('ip_address', $ip)->first();
-        if ($user === null) {
-            $isIt = false;
-        }
-
-        return $isIt;
-    }
-//--------------------alecell---------------------------------------
-    public static function isSpecialUser($ip){
-        return ($ip == '192.168.20.5');
-	}
-
-//--------------------Eric---------------------------------------
-
-	public static function isEric($ip){
-        return ($ip == '192.168.20.23');
-	}
-
 //-------------------VPN users--------------------------------------
 	public static function isVPNUser($ip){
 		return ($ip == '192.168.20.8' || $ip == '192.168.20.14' || $ip == '192.168.20.55'  || $ip == '192.168.20.24');
 	}
-//-------------------navajo-----------------------------------------
-	public static function isSpecialUser2($ip){
-        return ($ip == '192.168.20.17' || $ip == '192.168.20.16');
-	}
-//-------------------2 de mandy-------------------------------------
-	public static function isVerySpecialUser($ip){
-        return ($ip == '192.168.20.56' || $ip == '192.168.20.86');
-	}
-//-------------------Vengador---------------------------------------
-	public static function isAvenger($ip){
-        return ($ip == '192.168.20.14');
-	}
 
-	//-------------------flasho---------------------------------------
-	public static function isFlasho($ip){
-        return ($ip == '192.168.20.18');
-    }
 
-    public static function isAllowed($ip){
-        $isIt = in_array($ip, Portals::$allowedIps);
-
-        return $isIt;
-    }
-
-    public static function isInDownloads($ip){
-
-        $user = Gamer::where('ip_address', $ip)->first();
-
-        return $user->inDownloads;
-
-    }
 
 
 }
