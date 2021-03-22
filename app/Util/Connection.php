@@ -12,11 +12,9 @@ class Connection
     public static function change( $ip , Portal $portal ) {
 
         $script = 'ip firewall address-list set [find where address="' . $ip .'"] list="' . $portal->address_list . '"';
-        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:05';
 
         try {
             SSH::run($script);
-            SSH::run($cooldown);
         } catch (Exception $err) {
             throw $err;
         }
@@ -26,11 +24,9 @@ class Connection
     public static function close( Portal $portal ) {
 
         $script = 'ip dhcp-client release [find interface=' . $portal->dhcp_client . ']';
-        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:05';
 
         try {
             SSH::run($script);
-            SSH::run($cooldown);
         } catch (Exception $err) {
             throw $err;
         }

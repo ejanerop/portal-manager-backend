@@ -121,11 +121,9 @@ class MainController extends Controller
         $type ='';
 
         $script = 'ip dhcp-client release [find interface="a2"]';
-        $cooldown = 'ip firewall address-list add address=192.168.20.2 list=Cooldown timeout=00:00:05';
 
         try {
             SSH::run($script);
-            SSH::run($cooldown);
         } catch (Exception $err) {
             return response()->json('Intentalo en unos segundos', 403);
         }
