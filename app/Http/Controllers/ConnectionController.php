@@ -12,8 +12,6 @@ use Illuminate\Http\Request;
 class ConnectionController extends Controller
 {
 
-
-
     public function logout( Request $request, Client $client = null ) {
 
         $ip = $request->ip();

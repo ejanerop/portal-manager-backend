@@ -30,18 +30,18 @@ class PortalController extends Controller
             'name' => 'required',
             'address_list' => 'required',
             'dhcp_client' => 'required'
-            ]);
+        ]);
 
-            $portal = new Portal();
+        $portal = new Portal();
 
-            $portal->name = $request->input('name');
-            $portal->address_list = $request->input('address_list');
-            $portal->dhcp_client = $request->input('dhcp_client');
+        $portal->name = $request->input('name');
+        $portal->address_list = $request->input('address_list');
+        $portal->dhcp_client = $request->input('dhcp_client');
 
-            $portal->save();
+        $portal->save();
 
-            return response()->json('Correcto', 201);
-        }
+        return response()->json('Correcto', 201);
+    }
 
         /**
         * Display the specified resource.
@@ -69,22 +69,22 @@ class PortalController extends Controller
                 'name' => 'required|string',
                 'address_list' => 'required|string',
                 'dhcp_client' => 'required|string',
-                ]);
+            ]);
 
-                if ($request->input('name')) {
-                    $portal->name = $request->input('name');
-                }
-                if ($request->input('address_list')) {
-                    $portal->address_list = $request->input('address_list');
-                }
-                if ($request->input('dhcp_client')) {
-                    $portal->dhcp_client = $request->input('dhcp_client');
-                }
-
-                $portal->save();
-
-                return response()->json('Correcto', 204);
+            if ($request->input('name')) {
+                $portal->name = $request->input('name');
             }
+            if ($request->input('address_list')) {
+                $portal->address_list = $request->input('address_list');
+            }
+            if ($request->input('dhcp_client')) {
+                $portal->dhcp_client = $request->input('dhcp_client');
+            }
+
+            $portal->save();
+
+            return response()->json('Correcto', 204);
+        }
 
             /**
             * Remove the specified resource from storage.
